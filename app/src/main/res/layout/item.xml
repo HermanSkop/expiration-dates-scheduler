@@ -16,6 +16,7 @@
         android:background="@color/fg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+
         tools:layout_editor_absoluteY="354dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +32,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="name"
-                android:textSize="20sp"
+                android:textColor="@color/font"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -40,6 +42,7 @@
                 app:layout_constraintVertical_bias="0.23000002" />
 
             <TextView
+                android:textColor="@color/font"
                 android:id="@+id/category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,13 +70,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:text="date" />
+                android:text="date"
+                android:textColor="@color/font"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="quantity" />
+                android:text="quantity"
+                android:textColor="@color/font"
+                android:textSize="24sp" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

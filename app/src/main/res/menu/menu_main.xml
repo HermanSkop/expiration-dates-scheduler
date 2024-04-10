@@ -3,11 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.deadlinescheduler.MainActivity">
     <item
-        android:id="@+id/category_spinner"
-        app:actionLayout="@layout/category_picker"
-        android:title="Switch"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/category"
         app:actionLayout="@layout/switch_item"
         android:title="Category"

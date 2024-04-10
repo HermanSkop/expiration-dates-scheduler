@@ -45,4 +45,8 @@
     </string>
     <string name="button">Button</string>
     <string name="expired">expired</string>
+    <string name="items">Results: 11</string>
+    <string name="expiration_date">Expiration Date</string>
+    <string name="Quantity">Quantity</string>
+    <string name="save">Save</string>
 </resources>

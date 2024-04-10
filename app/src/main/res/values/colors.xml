@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="bg">#3A0057</color>
-    <color name="fg">#AA00FF</color>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="bg">#DCE7F1</color>
+    <color name="fg">#6279B6</color>
+    <color name="border">#414981</color>
+    <color name="colorPrimary">#474787</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#B4B4EF</color>
+    <color name="font">#BA000000</color>
+    <color name="fontReversed">#FFFFFF</color>
 </resources>
