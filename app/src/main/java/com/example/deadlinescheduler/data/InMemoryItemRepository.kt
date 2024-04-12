@@ -4,9 +4,9 @@ import com.example.deadlinescheduler.model.Category
 import com.example.deadlinescheduler.model.Item
 import java.time.LocalDate
 
-class InMemoryItemRepository : ItemRepository{
+object InMemoryItemRepository : ItemRepository {
     private val categories = InMemoryCategoryRepository().getCategories()
-    private val itemList = listOf(
+    private val itemList = mutableListOf(
         Item("Milk", 1, LocalDate.now().plusDays(7), categories[1]),
         Item("Bread", 1, LocalDate.now().plusDays(3), categories[1]),
         Item("Eggs", 12, LocalDate.now().plusDays(15), categories[1]),
@@ -23,5 +23,27 @@ class InMemoryItemRepository : ItemRepository{
 
     override fun getItems(): List<Item> {
         return itemList
+    }
+
+    override fun addItem(item: Item) {
+        if (itemList.contains(item)) {
+            throw IllegalArgumentException("Item already exists")
+        }
+        itemList.add(item)
+    }
+    override fun removeItem(item: Item) {
+        itemList.remove(item)
+    }
+    override fun updateItem(item: Item) {
+        if (!itemList.contains(item)) {
+            throw IllegalArgumentException("Item does not exist")
+        }
+        itemList[itemList.indexOf(item)] = item
+    }
+    override fun getItemId(item: Item): Int {
+        return itemList.indexOf(item)
+    }
+    override fun insertItemAtIndex(item: Item, index: Int) {
+        itemList.add(index, item)
     }
 }

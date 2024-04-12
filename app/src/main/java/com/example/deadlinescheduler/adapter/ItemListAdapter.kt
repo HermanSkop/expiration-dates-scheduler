@@ -3,6 +3,7 @@ package com.example.deadlinescheduler.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.deadlinescheduler.FormBottomSheetDialogFragment
 import com.example.deadlinescheduler.MainActivity
 import com.example.deadlinescheduler.databinding.ItemBinding
 import com.example.deadlinescheduler.model.Item
@@ -18,7 +19,7 @@ class ItemView(private val itemBinding: ItemBinding) : RecyclerView.ViewHolder(i
     }
 }
 
-class ItemListAdapter(private val activity: MainActivity) : RecyclerView.Adapter<ItemView>() {
+class ItemListAdapter : RecyclerView.Adapter<ItemView>() {
     var items: List<Item> = emptyList()
         set(value) {
             field = value
@@ -30,12 +31,15 @@ class ItemListAdapter(private val activity: MainActivity) : RecyclerView.Adapter
         val binding = ItemBinding.inflate(inflater, parent, false)
         return ItemView(binding)
     }
-
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ItemView, position: Int) {
         holder.itemView.setOnClickListener {
-            activity.showEditSheet(items[position])
+            val formBottomSheetDialogFragment = FormBottomSheetDialogFragment(this, items[position])
+            formBottomSheetDialogFragment.show(
+                (holder.itemView.context as MainActivity).supportFragmentManager,
+                "formBottomSheetDialogFragment"
+            )
         }
         holder.onBind(items[position])
     }
