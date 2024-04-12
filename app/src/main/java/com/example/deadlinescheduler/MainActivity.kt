@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.deadlinescheduler.adapter.CategorySpinnerAdapter
-import com.example.deadlinescheduler.data.Categories
 import com.example.deadlinescheduler.data.InMemoryCategoryRepository
 import com.example.deadlinescheduler.databinding.ActivityMainBinding
 import com.example.deadlinescheduler.model.Category
@@ -20,13 +19,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var listFragment: ListFragment
 
-    private var isExpired: Boolean = false
-    private var category: Category = Category(Categories.NONE)
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         defineSwitch(menu)
         defineSpinner()
+        listFragment.itemListAdapter.applyFilters()
         updateResultsTextView()
         return true
     }
@@ -63,10 +60,10 @@ class MainActivity : AppCompatActivity() {
         val item = menu.findItem(R.id.category)
         val switch = item.actionView?.findViewById<SwitchMaterial>(R.id.expiredSwitch)
         listFragment = supportFragmentManager.findFragmentById(R.id.include) as ListFragment
-        listFragment.filterExpiredItems(switch?.isChecked ?: false)
         switch?.setOnCheckedChangeListener { _, isChecked ->
-            isExpired = isChecked
-            applyFilter()
+            listFragment.itemListAdapter.updateFilterParams(isChecked)
+            listFragment.itemListAdapter.applyFilters()
+            updateResultsTextView()
         }
     }
 
@@ -78,18 +75,11 @@ class MainActivity : AppCompatActivity() {
             override fun onItemSelected(
                 parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
-                category = parent?.getItemAtPosition(position) as Category
-                applyFilter()
+                listFragment.itemListAdapter.updateFilterParams(parent?.getItemAtPosition(position) as Category)
+                listFragment.itemListAdapter.applyFilters()
+                updateResultsTextView()
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-    }
-
-    fun applyFilter() {
-        listFragment.resetItems()
-        listFragment.filterCategory(category)
-        listFragment.filterExpiredItems(isExpired)
-        updateResultsTextView()
     }
 }

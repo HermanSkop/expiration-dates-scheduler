@@ -9,12 +9,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.deadlinescheduler.adapter.CategorySpinnerAdapter
 import com.example.deadlinescheduler.adapter.ItemListAdapter
-import com.example.deadlinescheduler.data.Categories
+import com.example.deadlinescheduler.model.Category
 import com.example.deadlinescheduler.data.InMemoryCategoryRepository
 import com.example.deadlinescheduler.data.InMemoryItemRepository
 import com.example.deadlinescheduler.data.ItemRepository
 import com.example.deadlinescheduler.databinding.FragmentFormBinding
-import com.example.deadlinescheduler.model.Category
 import com.example.deadlinescheduler.model.Item
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.time.LocalDate
@@ -69,7 +68,6 @@ class FormBottomSheetDialogFragment(private val listAdapter: ItemListAdapter) : 
         Toast.makeText(binding.root.context, messageOnDismiss, Toast.LENGTH_SHORT).show()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun saveItem() {
         try {
             val name = binding.editName.text.toString()
@@ -91,9 +89,7 @@ class FormBottomSheetDialogFragment(private val listAdapter: ItemListAdapter) : 
             }
 
             listAdapter.items = itemRepository.getItemsSortedByExpirationDate()
-
-            val mainActivity = activity as MainActivity
-            mainActivity.applyFilter()
+            listAdapter.applyFilters()
 
             messageOnDismiss = messageOnSave
             dismiss()
@@ -103,7 +99,7 @@ class FormBottomSheetDialogFragment(private val listAdapter: ItemListAdapter) : 
     }
     private fun validateItem(name: String, quantity: Int, expirationDate: LocalDate, category: Category) {
         if (name.isEmpty() || name.isBlank()) throw IllegalArgumentException("Name cannot be empty")
-        if (category.name == Categories.NONE) throw IllegalArgumentException("Category must be selected")
+        if (category == Category.NONE) throw IllegalArgumentException("Category must be selected")
         if (expirationDate.isBefore(LocalDate.now())) throw IllegalArgumentException("Expiration date must be in the future")
         if (quantity <= 0) throw IllegalArgumentException("Quantity must be greater than 0")
     }
