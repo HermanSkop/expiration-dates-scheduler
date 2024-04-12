@@ -57,6 +57,8 @@ class ListFragment(private var isExpired: Boolean = false) : Fragment() {
         }
         itemListAdapter.notifyDataSetChanged()
     }
-
+    fun getNumberOfItems(): Int {
+        return itemListAdapter.items.size
+    }
 
 }
