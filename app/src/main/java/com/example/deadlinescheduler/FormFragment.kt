@@ -51,7 +51,7 @@ class FormBottomSheetDialogFragment(private val listAdapter: ItemListAdapter) : 
             binding.editName.setText(item!!.name)
             binding.editQuantity.setText(item!!.number.toString())
             binding.expirationDate.updateDate(item!!.expirationDate.year,
-                item!!.expirationDate.monthValue, item!!.expirationDate.dayOfMonth)
+                item!!.expirationDate.monthValue-1, item!!.expirationDate.dayOfMonth)
             binding.editCategory.spinner.setSelection(
                 (binding.editCategory.spinner.adapter as CategorySpinnerAdapter).getPosition(item!!.category)
             )
@@ -87,6 +87,8 @@ class FormBottomSheetDialogFragment(private val listAdapter: ItemListAdapter) : 
                 itemRepository.replaceItem(Item(name, quantity, expirationDate, category), item!!.name)
                 listAdapter.notifyItemChanged(listAdapter.items.indexOf(item))
             }
+            listAdapter.items = itemRepository.getItemsSortedByExpirationDate()
+            listAdapter.notifyDataSetChanged()
             messageOnDismiss = messageOnSave
             dismiss()
         } catch (e: Exception) {

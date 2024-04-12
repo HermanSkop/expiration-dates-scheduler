@@ -30,6 +30,7 @@ object InMemoryItemRepository : ItemRepository {
             throw IllegalArgumentException("Item already exists")
         }
         itemList.add(item)
+        itemList.sortBy { it.expirationDate }
     }
     override fun removeItem(item: Item) {
         itemList.remove(item)
@@ -47,11 +48,15 @@ object InMemoryItemRepository : ItemRepository {
         itemList.add(index, item)
     }
     override fun replaceItem(itemToInsert: Item, nameOfItemToReplace: String) {
-        val index = getItemId(itemToInsert)
-        removeItem(getItemByName(nameOfItemToReplace))
+        val itemToReplace = getItemByName(nameOfItemToReplace)
+        val index = getItemId(itemToReplace)
+        removeItem(itemToReplace)
         insertItemAtIndex(itemToInsert, index)
     }
     override fun getItemByName(name: String): Item {
         return itemList.find { it.name == name }!!
+    }
+    override fun getItemsSortedByExpirationDate(): List<Item> {
+        return itemList.sortedBy { it.expirationDate }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.deadlinescheduler
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,9 +24,10 @@ class ListFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         itemListAdapter = ItemListAdapter()
-        itemListAdapter.items = itemRepository.getItems()
+        itemListAdapter.items = itemRepository.getItemsSortedByExpirationDate()
 
         binding.list.apply {
             adapter = itemListAdapter
