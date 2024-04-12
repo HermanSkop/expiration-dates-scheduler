@@ -13,6 +13,7 @@
         android:src="@drawable/skull" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
+    android:id="@+id/expiredSwitch"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:minWidth="48dp"

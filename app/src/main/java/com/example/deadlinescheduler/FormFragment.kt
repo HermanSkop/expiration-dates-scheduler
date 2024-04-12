@@ -1,5 +1,6 @@
 package com.example.deadlinescheduler
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -68,6 +69,7 @@ class FormBottomSheetDialogFragment(private val listAdapter: ItemListAdapter) : 
         Toast.makeText(binding.root.context, messageOnDismiss, Toast.LENGTH_SHORT).show()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun saveItem() {
         try {
             val name = binding.editName.text.toString()
@@ -87,12 +89,15 @@ class FormBottomSheetDialogFragment(private val listAdapter: ItemListAdapter) : 
                 itemRepository.replaceItem(Item(name, quantity, expirationDate, category), item!!.name)
                 listAdapter.notifyItemChanged(listAdapter.items.indexOf(item))
             }
+
             listAdapter.items = itemRepository.getItemsSortedByExpirationDate()
-            listAdapter.notifyDataSetChanged()
+            val listFragment = parentFragmentManager.findFragmentById(R.id.include) as ListFragment
+            listFragment.filterExpiredItems()
+
             messageOnDismiss = messageOnSave
             dismiss()
         } catch (e: Exception) {
-            Toast.makeText(binding.root.context, e.message, Toast.LENGTH_LONG).show()
+            Toast.makeText(binding.root.context, e.message, Toast.LENGTH_SHORT).show()
         }
     }
     private fun validateItem(name: String, quantity: Int, expirationDate: LocalDate, category: Category) {

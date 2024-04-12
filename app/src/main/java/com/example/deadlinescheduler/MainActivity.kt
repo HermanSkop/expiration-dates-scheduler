@@ -13,13 +13,20 @@ import com.example.deadlinescheduler.adapter.CategorySpinnerAdapter
 import com.example.deadlinescheduler.data.InMemoryCategoryRepository
 import com.example.deadlinescheduler.databinding.ActivityMainBinding
 import com.example.deadlinescheduler.model.Category
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        val item = menu.findItem(R.id.category)
+        val switch = item.actionView?.findViewById<SwitchMaterial>(R.id.expiredSwitch)
+        val fragment = supportFragmentManager.findFragmentById(R.id.include) as ListFragment
+        fragment.filterExpiredItems(switch?.isChecked ?: false)
+        switch?.setOnCheckedChangeListener { _, isChecked ->
+            fragment.filterExpiredItems(isChecked)
+        }
         return true
     }
 
@@ -33,10 +40,12 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.title = ""
 
         binding.toolbar.findViewById<Spinner>(R.id.spinner).adapter = CategorySpinnerAdapter(
-    this, InMemoryCategoryRepository().getCategories())
+            this, InMemoryCategoryRepository().getCategories()
+        )
 
         edgeToEdge()
     }
+
     private fun edgeToEdge() {
         enableEdgeToEdge()
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
