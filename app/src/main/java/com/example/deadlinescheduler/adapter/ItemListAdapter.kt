@@ -18,7 +18,7 @@ class ItemView(private val itemBinding: ItemBinding) : RecyclerView.ViewHolder(i
     fun onBind(item: Item) {
         with(itemBinding) {
             name.text = item.name
-            quantity.text = item.number.toString()
+            quantity.text = item.number?.toString() ?: "--"
             expirationDate.text = item.expirationDate.toString()
             category.text = item.category.toString()
         }

@@ -49,7 +49,7 @@ class FormBottomSheetDialogFragment(private val listAdapter: ItemListAdapter) : 
 
         if (item != null) {
             binding.editName.setText(item!!.name)
-            binding.editQuantity.setText(item!!.number.toString())
+            binding.editQuantity.setText(item!!.number?.toString() ?: "")
             binding.expirationDate.updateDate(item!!.expirationDate.year,
                 item!!.expirationDate.monthValue-1, item!!.expirationDate.dayOfMonth)
             binding.editCategory.spinner.setSelection(
@@ -71,7 +71,7 @@ class FormBottomSheetDialogFragment(private val listAdapter: ItemListAdapter) : 
     private fun saveItem() {
         try {
             val name = binding.editName.text.toString()
-            val quantity = binding.editQuantity.text.toString().toInt()
+            val quantity = binding.editQuantity.text.toString().toIntOrNull()
             val expirationDate = LocalDate.of(
                 binding.expirationDate.year,
                 binding.expirationDate.month + 1,
@@ -97,10 +97,10 @@ class FormBottomSheetDialogFragment(private val listAdapter: ItemListAdapter) : 
             Toast.makeText(binding.root.context, e.message, Toast.LENGTH_SHORT).show()
         }
     }
-    private fun validateItem(name: String, quantity: Int, expirationDate: LocalDate, category: Category) {
+    private fun validateItem(name: String, quantity: Int?, expirationDate: LocalDate, category: Category) {
         if (name.isEmpty() || name.isBlank()) throw IllegalArgumentException("Name cannot be empty")
         if (category == Category.NONE) throw IllegalArgumentException("Category must be selected")
         if (expirationDate.isBefore(LocalDate.now())) throw IllegalArgumentException("Expiration date must be in the future")
-        if (quantity <= 0) throw IllegalArgumentException("Quantity must be greater than 0")
+        if (quantity != null && quantity <= 0) throw IllegalArgumentException("Quantity must be greater than 0 or left empty")
     }
 }
