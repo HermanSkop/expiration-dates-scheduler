@@ -2,6 +2,7 @@ package com.example.deadlinescheduler.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.deadlinescheduler.FormBottomSheetDialogFragment
 import com.example.deadlinescheduler.MainActivity
@@ -35,11 +36,20 @@ class ItemListAdapter : RecyclerView.Adapter<ItemView>() {
 
     override fun onBindViewHolder(holder: ItemView, position: Int) {
         holder.itemView.setOnClickListener {
-            val formBottomSheetDialogFragment = FormBottomSheetDialogFragment(this, items[position])
-            formBottomSheetDialogFragment.show(
-                (holder.itemView.context as MainActivity).supportFragmentManager,
-                "formBottomSheetDialogFragment"
-            )
+            if (items[position].expirationDate.isBefore(java.time.LocalDate.now())) {
+                Toast.makeText(
+                    holder.itemView.context,
+                    "${items[position].name} is already expired",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                val formBottomSheetDialogFragment =
+                    FormBottomSheetDialogFragment(this, items[position])
+                formBottomSheetDialogFragment.show(
+                    (holder.itemView.context as MainActivity).supportFragmentManager,
+                    "formBottomSheetDialogFragment"
+                )
+            }
         }
         holder.onBind(items[position])
     }

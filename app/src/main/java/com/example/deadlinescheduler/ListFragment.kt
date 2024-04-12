@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.deadlinescheduler.adapter.ItemListAdapter
+import com.example.deadlinescheduler.data.Categories
 import com.example.deadlinescheduler.data.InMemoryItemRepository
 import com.example.deadlinescheduler.databinding.FragmentListBinding
+import com.example.deadlinescheduler.model.Category
 import java.time.LocalDate
-
+@SuppressLint("NotifyDataSetChanged")
 class ListFragment(private var isExpired: Boolean = false) : Fragment() {
     private lateinit var binding: FragmentListBinding
     private lateinit var itemListAdapter: ItemListAdapter
@@ -42,23 +44,36 @@ class ListFragment(private var isExpired: Boolean = false) : Fragment() {
             )
         }
     }
-
+    fun resetItems() {
+        itemListAdapter.items = itemRepository.getItemsSortedByExpirationDate()
+        itemListAdapter.notifyDataSetChanged()
+    }
     fun filterExpiredItems(checked: Boolean) {
         isExpired = checked
         filterExpiredItems()
     }
     fun filterExpiredItems() {
         itemListAdapter.items = if (isExpired) {
-            itemRepository.getItemsSortedByExpirationDate()
+            itemListAdapter.items
                 .filter { it.expirationDate.isBefore(LocalDate.now()) }
         } else {
-            itemRepository.getItemsSortedByExpirationDate()
+            itemListAdapter.items
                 .filter { it.expirationDate.isAfter(LocalDate.now().minusDays(1)) }
         }
         itemListAdapter.notifyDataSetChanged()
     }
     fun getNumberOfItems(): Int {
         return itemListAdapter.items.size
+    }
+
+    fun filterCategory(category: Category) {
+        if (category.name == Categories.NONE) {
+            resetItems()
+            return
+        }
+        itemListAdapter.items = itemListAdapter.items
+            .filter { it.category == category }
+        itemListAdapter.notifyDataSetChanged()
     }
 
 }

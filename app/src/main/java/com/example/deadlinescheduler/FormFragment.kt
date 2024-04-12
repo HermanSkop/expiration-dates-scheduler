@@ -91,11 +91,9 @@ class FormBottomSheetDialogFragment(private val listAdapter: ItemListAdapter) : 
             }
 
             listAdapter.items = itemRepository.getItemsSortedByExpirationDate()
-            val listFragment = parentFragmentManager.findFragmentById(R.id.include) as ListFragment
-            listFragment.filterExpiredItems()
 
             val mainActivity = activity as MainActivity
-            mainActivity.updateResultsTextView()
+            mainActivity.applyFilter()
 
             messageOnDismiss = messageOnSave
             dismiss()
