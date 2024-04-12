@@ -84,10 +84,8 @@ class FormBottomSheetDialogFragment(private val listAdapter: ItemListAdapter) : 
                 itemRepository.addItem(Item(name, quantity, expirationDate, category))
                 listAdapter.notifyItemInserted(listAdapter.items.size)
             } else {
-                val index = itemRepository.getItemId(item!!)
-                itemRepository.removeItem(item!!)
-                itemRepository.insertItemAtIndex(Item(name, quantity, expirationDate, category), index)
-                listAdapter.notifyItemChanged(index)
+                itemRepository.replaceItem(Item(name, quantity, expirationDate, category), item!!.name)
+                listAdapter.notifyItemChanged(listAdapter.items.indexOf(item))
             }
             messageOnDismiss = messageOnSave
             dismiss()

@@ -46,4 +46,12 @@ object InMemoryItemRepository : ItemRepository {
     override fun insertItemAtIndex(item: Item, index: Int) {
         itemList.add(index, item)
     }
+    override fun replaceItem(itemToInsert: Item, nameOfItemToReplace: String) {
+        val index = getItemId(itemToInsert)
+        removeItem(getItemByName(nameOfItemToReplace))
+        insertItemAtIndex(itemToInsert, index)
+    }
+    override fun getItemByName(name: String): Item {
+        return itemList.find { it.name == name }!!
+    }
 }

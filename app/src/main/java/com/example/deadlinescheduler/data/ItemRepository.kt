@@ -9,4 +9,6 @@ interface ItemRepository {
     fun updateItem(item: Item)
     fun getItemId(item: Item): Int
     fun insertItemAtIndex(item: Item, index: Int)
+    fun replaceItem(itemToInsert: Item, nameOfItemToReplace: String)
+    fun getItemByName(name: String): Item
 }
