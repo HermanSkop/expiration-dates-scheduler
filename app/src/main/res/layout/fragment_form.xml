@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sheet"
-    tools:context=".FormFragment"
+    tools:context=".FormBottomSheetDialogFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/update_product_container">
@@ -112,6 +112,20 @@
         android:minHeight="48dp"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+
+    <EditText
+        android:id="@+id/editUnit"
+        android:layout_width="112dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="24dp"
+        android:ems="10"
+        android:hint="@string/Unit"
+        android:inputType="text"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/editQuantity"
+        app:layout_constraintStart_toEndOf="@+id/editQuantity"
+        app:layout_constraintTop_toTopOf="@+id/editQuantity" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"

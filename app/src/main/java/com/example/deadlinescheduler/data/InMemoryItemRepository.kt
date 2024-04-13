@@ -5,21 +5,7 @@ import com.example.deadlinescheduler.model.Item
 import java.time.LocalDate
 
 object InMemoryItemRepository : ItemRepository {
-    private val categories = InMemoryCategoryRepository().getCategories()
-    private val itemList = mutableListOf(
-        Item("Milk", 1, LocalDate.now().minusDays(7), categories[1]),
-        Item("Bread", 1, LocalDate.now().plusDays(3), categories[1]),
-        Item("Eggs", 12, LocalDate.now().minusDays(15), categories[1]),
-        Item("Marijuana", 1, LocalDate.now().plusDays(10), categories[2]),
-        Item("Cough Syrup", 1, LocalDate.now().plusDays(30), categories[2]),
-        Item("Bandages", 10, LocalDate.now().plusDays(365), categories[2]),
-        Item("Pills", 30, LocalDate.now().minusDays(30), categories[2]),
-        Item("Shampoo", 1, LocalDate.now().plusDays(90), categories[3]),
-        Item("Conditioner", 1, LocalDate.now().minusDays(90), categories[3]),
-        Item("Lipstick", 1, LocalDate.now().plusDays(180), categories[3]),
-        Item("Foundation", 1, LocalDate.now().minusDays(365), categories[3]),
-        Item("Mascara", 1, LocalDate.now().plusDays(180), categories[3]),
-    )
+    private val itemList = Item.createSampleItems().toMutableList()
 
     override fun addItem(item: Item) {
         if (itemList.contains(item)) {
@@ -28,21 +14,26 @@ object InMemoryItemRepository : ItemRepository {
         itemList.add(item)
         itemList.sortBy { it.expirationDate }
     }
+
     override fun removeItem(item: Item) {
         itemList.remove(item)
     }
+
     override fun updateItem(item: Item) {
         if (!itemList.contains(item)) {
             throw IllegalArgumentException("Item does not exist")
         }
         itemList[itemList.indexOf(item)] = item
     }
+
     override fun getItemId(item: Item): Int {
         return itemList.indexOf(item)
     }
+
     override fun insertItemAtIndex(item: Item, index: Int) {
         itemList.add(index, item)
     }
+
     override fun replaceItem(itemToInsert: Item, nameOfItemToReplace: String) {
         if (itemList.contains(itemToInsert) && itemToInsert.name != nameOfItemToReplace) {
             throw IllegalArgumentException("Item already exists")
@@ -52,12 +43,15 @@ object InMemoryItemRepository : ItemRepository {
         removeItem(itemToReplace)
         insertItemAtIndex(itemToInsert, index)
     }
+
     override fun getItemByName(name: String): Item {
         return itemList.find { it.name == name }!!
     }
+
     override fun getItemsSortedByExpirationDate(): List<Item> {
         return itemList.sortedBy { it.expirationDate }
     }
+
     override fun getFilteredItems(isExpired: Boolean): List<Item> {
         return if (isExpired) {
             itemList.filter { it.expirationDate.isBefore(LocalDate.now()) }

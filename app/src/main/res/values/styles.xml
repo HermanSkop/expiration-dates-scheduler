@@ -1,6 +1,8 @@
 <resources>
-    <style name="Widget.Theme.DeadlineScheduler.MyView" parent="">
-        <item name="android:background">@color/gray_400</item>
-        <item name="exampleColor">@color/light_blue_400</item>
+    <style name="Switch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorSwitchThumbNormal">@color/bg</item>
+        <item name="android:colorForeground">@color/border</item>
+
     </style>
 </resources>
